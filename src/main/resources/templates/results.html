@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Result</title>
+</head>
+<body>
+<h1>Result</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Employee ID 1</th>
+    <th>Employee ID 2</th>
+    <th>Project ID</th>
+    <th>Days Worked Together</th>
+  </tr>
+  </thead>
+  <tbody>
+  <th:block th:each="overlap : ${overlappingProjects}">
+    <tr>
+      <td th:text="${overlap.employeeId1}"></td>
+      <td th:text="${overlap.employeeId2}"></td>
+      <td th:text="${overlap.projectId}"></td>
+      <td th:text="${overlap.daysWorkedTogether}"></td>
+    </tr>
+  </th:block>
+  </tbody>
+</table>
+</body>
+</html>
