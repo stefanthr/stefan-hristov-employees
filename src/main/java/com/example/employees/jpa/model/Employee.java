@@ -28,4 +28,5 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee2")
     private List<OverlappingProject> overlappingProjects2;
+
 }
