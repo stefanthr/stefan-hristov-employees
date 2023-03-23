@@ -53,7 +53,7 @@ public class EmployeeProjectControllerTest {
     public void testHandleFileUpload() throws IOException {
         MockMultipartFile mockFile = new MockMultipartFile("file", "test.csv", "text/csv", "test".getBytes());
         List<OverlappingProject> overlappingProjects = new ArrayList<>();
-        overlappingProjects.add(new OverlappingProject(new Employee("John"), new Employee("Jane"), new Project(), 5));
+        overlappingProjects.add(new OverlappingProject(new Employee(223L),new Employee(334L), new Project(335L), 5));
 
         when(employeeProjectService.checkForOverlappingProjects(mockFile)).thenReturn(overlappingProjects);
         when(model.addAttribute("employee1Id", overlappingProjects.get(0).getEmployee1().getId())).thenReturn(model);

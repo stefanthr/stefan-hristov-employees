@@ -2,6 +2,7 @@ package com.example.employees.jpa.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
 @Table(name = "employee")
 public class Employee {
 
@@ -29,4 +31,7 @@ public class Employee {
     @OneToMany(mappedBy = "employee2")
     private List<OverlappingProject> overlappingProjects2;
 
+    public Employee(Long id) {
+        this.id = id;
+    }
 }
