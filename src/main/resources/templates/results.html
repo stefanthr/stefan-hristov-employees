@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Result</title>
 </head>
@@ -16,14 +16,11 @@
   </tr>
   </thead>
   <tbody>
-  <th:block th:each="overlap : ${overlappingProjects}">
     <tr>
-      <td th:text="${overlap.employeeId1}"></td>
-      <td th:text="${overlap.employeeId2}"></td>
-      <td th:text="${overlap.projectId}"></td>
-      <td th:text="${overlap.daysWorkedTogether}"></td>
+      <td th:text="${employee1Id}"></td>
+      <td th:text="${employee2Id}"></td>
+      <td th:text="${projectId}"></td>
     </tr>
-  </th:block>
   </tbody>
 </table>
 </body>

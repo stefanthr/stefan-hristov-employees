@@ -13,7 +13,6 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "fist_name")
@@ -23,4 +22,10 @@ public class Employee {
     private String lastName;
     @OneToMany(mappedBy = "employee")
     private List<EmployeeProject> employeeProjects;
+
+    @OneToMany(mappedBy = "employee1")
+    private List<OverlappingProject> overlappingProjects1;
+
+    @OneToMany(mappedBy = "employee2")
+    private List<OverlappingProject> overlappingProjects2;
 }

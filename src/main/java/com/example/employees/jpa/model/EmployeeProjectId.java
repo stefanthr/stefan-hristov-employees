@@ -1,7 +1,9 @@
 package com.example.employees.jpa.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -9,6 +11,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class EmployeeProjectId implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)

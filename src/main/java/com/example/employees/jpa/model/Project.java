@@ -14,7 +14,6 @@ import java.util.List;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
@@ -26,4 +25,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<EmployeeProject> employeeProjects;
+
+    @OneToOne(mappedBy = "project")
+    private OverlappingProject overlappingProject;
 }

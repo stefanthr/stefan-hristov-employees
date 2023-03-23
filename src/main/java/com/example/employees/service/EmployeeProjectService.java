@@ -1,10 +1,9 @@
 package com.example.employees.service;
 
-import com.example.employees.jpa.model.Employee;
-import com.example.employees.jpa.model.EmployeeProject;
-import com.example.employees.jpa.model.Project;
+import com.example.employees.jpa.model.*;
 import com.example.employees.jpa.repository.EmployeeProjectRepository;
 import com.example.employees.jpa.repository.EmployeeRepository;
+import com.example.employees.jpa.repository.OverlappingProjectRepository;
 import com.example.employees.jpa.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +27,12 @@ public class EmployeeProjectService {
     @Autowired
     private EmployeeProjectRepository employeeProjectRepository;
 
-    public List<String> checkForOverlappingProjects(MultipartFile file) throws IOException {
+    @Autowired
+    private OverlappingProjectRepository overlappingProjectRepository;
+
+    public List<OverlappingProject> checkForOverlappingProjects(MultipartFile file) throws IOException {
         List<EmployeeProject> employeeProjects = parseCsvFile(file);
-
-        List<String> overlappingProjects = new ArrayList<>();
-
+        List<OverlappingProject> overlappingProjects = new ArrayList<>();
         for (EmployeeProject employeeProject : employeeProjects) {
             List<EmployeeProject> otherEmployeeProjects = employeeProjectRepository.findByProjectAndStartDateLessThanEqualAndEndDateGreaterThanEqual(
                     employeeProject.getProject(), employeeProject.getStartDate(), employeeProject.getEndDate());
@@ -41,13 +41,12 @@ public class EmployeeProjectService {
                 if (employeeProject.getEmployee().getId().equals(otherEmployeeProject.getEmployee().getId())) {
                     continue;
                 }
-
-                overlappingProjects.add("Employees " + employeeProject.getEmployee().getId() +
-                        " and " + otherEmployeeProject.getEmployee().getId() + " worked on project " +
-                        employeeProject.getProject().getId() + " at the same time");
+                OverlappingProject overlappingProject = new OverlappingProject(employeeProject.getEmployee(), otherEmployeeProject.getEmployee(), employeeProject.getProject(), 5);
+                overlappingProjects.add(overlappingProject);
             }
-        }
 
+        }
+        overlappingProjectRepository.saveAll(overlappingProjects);
         return overlappingProjects;
     }
 
@@ -78,12 +77,7 @@ public class EmployeeProjectService {
                             return projectRepository.save(newProject);
                         });
 
-                EmployeeProject employeeProject = new EmployeeProject();
-                employeeProject.setEmployee(employee);
-                employeeProject.setProject(project);
-                employeeProject.setStartDate(startDate);
-                employeeProject.setEndDate(endDate);
-
+                EmployeeProject employeeProject = new EmployeeProject(new EmployeeProjectId(employee, project), employee, project, startDate, endDate);
                 employeeProjects.add(employeeProject);
             }
         }
