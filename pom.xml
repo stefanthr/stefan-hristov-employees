@@ -16,9 +16,7 @@
   <description>Employee management system</description>
   <properties>
     <java.version>17</java.version>
-    <springboot.version>3.0.4</springboot.version>
     <opencsv.version>5.7.1</opencsv.version>
-    <junit-jupiter.version>5.9.2</junit-jupiter.version>
   </properties>
   <dependencies>
     <dependency>
@@ -62,12 +60,6 @@
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
       <version>${opencsv.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit-jupiter.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
