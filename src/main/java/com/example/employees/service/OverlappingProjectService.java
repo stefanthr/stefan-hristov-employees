@@ -44,8 +44,7 @@ public class OverlappingProjectService {
   private static List<OverlappingProject> filterOverlappingProjects(
       List<OverlappingProject> overlappingProjects) {
     Set<OverlappingProject> overlappingProjectsSet = new HashSet<>(overlappingProjects);
-    List<OverlappingProject> uniqueOverlappingProjects = new ArrayList<>(overlappingProjectsSet);
-    return uniqueOverlappingProjects;
+    return new ArrayList<>(overlappingProjectsSet);
   }
 
   private void findOverlappingProjects(EmployeeProject employeeProject,
@@ -68,8 +67,7 @@ public class OverlappingProjectService {
       EmployeeProject otherEmployeeProject) {
     LocalDate overlapStart = getOverlapStart(employeeProject, otherEmployeeProject);
     LocalDate overlapEnd = getOverlapEnd(employeeProject, otherEmployeeProject);
-    long overlappingDays = ChronoUnit.DAYS.between(overlapStart, overlapEnd);
-    return overlappingDays;
+    return ChronoUnit.DAYS.between(overlapStart, overlapEnd);
   }
 
   private static LocalDate getOverlapEnd(EmployeeProject employeeProject,

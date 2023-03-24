@@ -26,7 +26,7 @@ public class OverlappingProjectController {
   @Autowired
   private OverlappingProjectService overlappingProjectService;
 
-  private Logger logger = LoggerFactory.getLogger(getClass());
+  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   @GetMapping("/")
   public String showUploadForm() {

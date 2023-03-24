@@ -26,10 +26,10 @@ public class CsvService {
   @Autowired
   private EmployeeProjectService employeeProjectService;
 
-  private Logger logger = LoggerFactory.getLogger(getClass());
+  private final Logger logger = LoggerFactory.getLogger(getClass());
 
   protected List<EmployeeProject> parseCsvFile(MultipartFile file)
-      throws IOException, InvalidInputException {
+      throws IOException {
     List<EmployeeProject> employeeProjects = new ArrayList<>();
     try (CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
       if (isHeaderValid(csvReader.readNext())) {
@@ -38,10 +38,12 @@ public class CsvService {
           parseInputTo(employeeProjects, values);
         }
       } else {
-        throw new InvalidInputException("Invalid column names");
+        throw new CsvValidationException("CSV is not valid");
       }
+    } catch (InvalidInputException invalidInputException) {
+      logger.info("Invalid Input: " + invalidInputException.getMessage());
     } catch (CsvValidationException csvValidationException) {
-      logger.error("CSV Exception: " + csvValidationException.getMessage());
+      logger.info("CSV exception: " + csvValidationException.getMessage());
     }
     employeeProjectRepository.saveAll(employeeProjects);
     return employeeProjects;
