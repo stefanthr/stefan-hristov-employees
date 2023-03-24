@@ -11,8 +11,9 @@ import java.util.List;
 
 @Repository
 public interface EmployeeProjectRepository extends JpaRepository<EmployeeProject, Long>,
-        JpaSpecificationExecutor<EmployeeProject> {
-    List<EmployeeProject> findByProjectAndStartDateLessThanEqualAndEndDateGreaterThanEqual(Project project, LocalDate dateTo, LocalDate dateFrom);
+    JpaSpecificationExecutor<EmployeeProject> {
+
+  List<EmployeeProject> findByProject(Project project);
 
 }
 
