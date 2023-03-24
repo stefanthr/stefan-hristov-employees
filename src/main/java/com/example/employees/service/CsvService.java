@@ -47,17 +47,16 @@ public class CsvService {
     return employeeProjects;
   }
 
-  private void parseInputTo(List<EmployeeProject> employeeProjects, String[] values) {
-    try {
-      if (!isLineEmpty(values)) {
-        parseLineToEmployeeProject(values, employeeProjects);
-      }
-    } catch (InvalidInputException invalidInputException) {
-      logger.error("Line cannot be empty:" + invalidInputException.getMessage());
+  private void parseInputTo(List<EmployeeProject> employeeProjects, String[] values)
+      throws InvalidInputException {
+    if (!isLineEmpty(values)) {
+      parseLineToEmployeeProject(values, employeeProjects);
+    } else {
+      throw new InvalidInputException("Line cannot be empty");
     }
   }
 
-  private static boolean isLineEmpty(String[] contentLine) {
+  private boolean isLineEmpty(String[] contentLine) {
     return Arrays.stream(contentLine).allMatch(s -> s.equals(""));
   }
 
