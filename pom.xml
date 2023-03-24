@@ -7,7 +7,7 @@
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>3.0.4</version>
-    <relativePath/> <!-- lookup parent from repository -->
+    <relativePath/>
   </parent>
   <groupId>com.example</groupId>
   <artifactId>employees</artifactId>
@@ -16,6 +16,9 @@
   <description>Employee management system</description>
   <properties>
     <java.version>17</java.version>
+    <springboot.version>3.0.4</springboot.version>
+    <opencsv.version>5.7.1</opencsv.version>
+    <junit-jupiter.version>5.9.2</junit-jupiter.version>
   </properties>
   <dependencies>
     <dependency>
@@ -58,24 +61,13 @@
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.7.1</version>
+      <version>${opencsv.version}</version>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.2</version>
+      <version>${junit-jupiter.version}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.opencsv</groupId>
-      <artifactId>opencsv</artifactId>
-      <version>5.7.1</version>
     </dependency>
   </dependencies>
 
