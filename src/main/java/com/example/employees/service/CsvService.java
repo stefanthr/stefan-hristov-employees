@@ -51,8 +51,6 @@ public class CsvService {
       throws InvalidInputException {
     if (!isLineEmpty(values)) {
       parseLineToEmployeeProject(values, employeeProjects);
-    } else {
-      throw new InvalidInputException("Line cannot be empty");
     }
   }
 
