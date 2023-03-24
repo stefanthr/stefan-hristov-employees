@@ -1,5 +1,6 @@
 package com.example.employees.service;
 
+import com.example.employees.exception.InvalidInputException;
 import com.example.employees.jpa.model.EmployeeProject;
 import com.example.employees.jpa.model.OverlappingProject;
 import com.example.employees.jpa.repository.EmployeeProjectRepository;
@@ -25,12 +26,12 @@ public class OverlappingProjectService {
   private EmployeeProjectRepository employeeProjectRepository;
 
   @Autowired
-  private EmployeeProjectService employeeProjectService;
+  private CsvService csvService;
 
   public List<OverlappingProject> getOverlappingProjects(MultipartFile file)
-      throws IOException {
+      throws InvalidInputException, IOException {
     List<OverlappingProject> overlappingProjects = new ArrayList<>();
-    List<EmployeeProject> employeeProjects = employeeProjectService.parseCsvFile(file);
+    List<EmployeeProject> employeeProjects = csvService.parseCsvFile(file);
     for (EmployeeProject employeeProject : employeeProjects) {
       findOverlappingProjects(employeeProject, overlappingProjects);
     }

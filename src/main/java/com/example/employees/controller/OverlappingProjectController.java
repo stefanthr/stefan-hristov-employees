@@ -1,5 +1,6 @@
 package com.example.employees.controller;
 
+import com.example.employees.exception.InvalidInputException;
 import com.example.employees.jpa.model.OverlappingProject;
 import com.example.employees.jpa.repository.OverlappingProjectRepository;
 import com.example.employees.service.OverlappingProjectService;
@@ -25,19 +26,23 @@ public class OverlappingProjectController {
   @Autowired
   private OverlappingProjectService overlappingProjectService;
 
+  private Logger logger = LoggerFactory.getLogger(getClass());
+
   @GetMapping("/")
   public String showUploadForm() {
     return "uploadForm";
   }
 
   @PostMapping("/upload")
-  public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
-    Logger logger = LoggerFactory.getLogger(OverlappingProjectController.class);
+  public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model)
+      throws IllegalArgumentException {
     List<OverlappingProject> overlappingProjects = new ArrayList<>();
     try {
       overlappingProjects = overlappingProjectService.getOverlappingProjects(file);
-    } catch (IOException e) {
-      logger.info("Error processing file: " + e.getMessage());
+    } catch (IOException ioException) {
+      logger.error("Error processing file: " + ioException.getMessage());
+    } catch (InvalidInputException invalidInputException) {
+      logger.info("Invalid input: " + invalidInputException.getMessage());
     }
     model.addAttribute("overlappingProjects", overlappingProjects);
     return "results";
