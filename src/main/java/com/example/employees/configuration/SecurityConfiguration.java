@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+//TODO configure Spring security only for the used endpoints
 @Configuration
 public class SecurityConfiguration {
 
