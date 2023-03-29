@@ -49,14 +49,14 @@ public class CsvService {
     return employeeProjects;
   }
 
-  private void parseInputTo(List<EmployeeProject> employeeProjects, String[] values)
+  protected void parseInputTo(List<EmployeeProject> employeeProjects, String[] values)
       throws InvalidInputException {
     if (!isLineEmpty(values)) {
       parseLineToEmployeeProject(values, employeeProjects);
     }
   }
 
-  private boolean isLineEmpty(String[] contentLine) {
+  protected boolean isLineEmpty(String[] contentLine) {
     return Arrays.stream(contentLine).allMatch(s -> s.equals(""));
   }
 
