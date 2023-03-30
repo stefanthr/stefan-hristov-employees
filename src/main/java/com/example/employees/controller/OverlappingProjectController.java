@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class OverlappingProjectController {
 
-  @Autowired
   private OverlappingProjectRepository overlappingProjectRepository;
-
-  @Autowired
   private OverlappingProjectService overlappingProjectService;
-
   private final Logger logger = LoggerFactory.getLogger(getClass());
+
+  public OverlappingProjectController(OverlappingProjectRepository overlappingProjectRepository,
+      OverlappingProjectService overlappingProjectService) {
+    this.overlappingProjectRepository = overlappingProjectRepository;
+    this.overlappingProjectService = overlappingProjectService;
+  }
 
   @GetMapping("/")
   public String showUploadForm() {

@@ -12,21 +12,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class OverlappingProjectService {
 
-  @Autowired
   private OverlappingProjectRepository overlappingProjectRepository;
-
-  @Autowired
   private EmployeeProjectRepository employeeProjectRepository;
-
-  @Autowired
   private CsvService csvService;
+
+  public OverlappingProjectService(OverlappingProjectRepository overlappingProjectRepository,
+      EmployeeProjectRepository employeeProjectRepository, CsvService csvService) {
+    this.overlappingProjectRepository = overlappingProjectRepository;
+    this.employeeProjectRepository = employeeProjectRepository;
+    this.csvService = csvService;
+  }
 
   public List<OverlappingProject> getOverlappingProjects(MultipartFile file)
       throws InvalidInputException, IOException {

@@ -1,12 +1,10 @@
 package com.example.employees.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.any;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.anyList;
-import static org.mockito.Mockito.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import com.example.employees.exception.InvalidInputException;
 import com.example.employees.jpa.model.EmployeeProject;
@@ -18,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
@@ -30,12 +28,15 @@ public class CsvServiceTest {
 
   @Mock
   private EmployeeProjectRepository employeeProjectRepository;
-
   @Mock
   private EmployeeProjectService employeeProjectService;
-
-  @InjectMocks
   private CsvService csvService;
+
+  @BeforeEach
+  void setUp() {
+    csvService = new CsvService(employeeProjectRepository, employeeProjectService);
+  }
+
 
   @Test
   void testParseCsvFile_whenThreeEmployeeProjects() throws IOException {
@@ -45,9 +46,6 @@ public class CsvServiceTest {
         "3,3,2021-03-01,2021-04-01\n";
     InputStream inputStream = new ByteArrayInputStream(csvData.getBytes(StandardCharsets.UTF_8));
     MockMultipartFile file = new MockMultipartFile("data.csv", inputStream);
-
-    when(employeeProjectService.createEmployeeProject(anyLong(), anyLong(), any(),
-        any())).thenReturn(new EmployeeProject());
 
     List<EmployeeProject> result = csvService.parseCsvFile(file);
 
@@ -59,10 +57,6 @@ public class CsvServiceTest {
   void testParseInputTo_whenDateToIsNow() throws InvalidInputException {
     List<EmployeeProject> employeeProjects = new ArrayList<>();
     String[] values = {"1", "1", "2021-01-01", "NULL"};
-
-    when(employeeProjectService
-        .createEmployeeProject(anyLong(), anyLong(), any(), any())).thenReturn(
-        new EmployeeProject());
 
     csvService.parseInputTo(employeeProjects, values);
 
@@ -76,25 +70,34 @@ public class CsvServiceTest {
     assertThat(csvService.isLineEmpty(new String[]{"", "", ""})).isTrue();
     assertThat(csvService.isLineEmpty(new String[]{"", "a", ""})).isFalse();
   }
-}
-/*
+
   @Test
   void testIsHeaderValid() {
-    assertTrue(csvService.isHeaderValid(new String[]{"EmpID", "ProjectID", "DateFrom", "DateTo"}));
-    assertFalse(
-        csvService.isHeaderValid(new String[]{"EmpID", "ProjectID", "DateFrom", "InvalidHeader"}));
+    assertThat(csvService.isHeaderValid(
+        new String[]{"EmpID", "ProjectID", "DateFrom", "DateTo"})).isTrue();
+    assertThat(csvService.isHeaderValid(
+        new String[]{"EmpID", "ProjectID", "DateFrom", "InvalidHeader"})).isFalse();
   }
 
   @Test
   void testParseLineToEmployeeProject() throws InvalidInputException {
     List<EmployeeProject> employeeProjects = new ArrayList<>();
-    String[] values = {"1", "1", "2021-01-01", "NULL"};
-
-    doReturn(new EmployeeProject()).when(employeeProjectService)
-        .createEmployeeProject(anyLong(), anyLong(), any(), any());
+    String[] values = {"1", "1", "2021-01-01", "2021-01-04"};
 
     csvService.parseLineToEmployeeProject(values, employeeProjects);
 
-//    verify(employeeProjectService, times(1)).createEmployeeProject(1L, 1L, LocalDate.parse
-*/
+    verify(employeeProjectService, times(1)).createEmployeeProject(1L, 1L,
+        LocalDate.parse("2021-01-01"), LocalDate.parse("2021-01-04"));
+    assertThat(employeeProjects.size()).isEqualTo(1);
+  }
 
+  @Test
+  void testParseLineToEmployeeProject_whenInputValueIsEmpty() throws InvalidInputException {
+    List<EmployeeProject> employeeProjects = new ArrayList<>();
+    String[] values = {"1", "1", "", "2021-01-04"};
+
+    assertThatThrownBy(() ->
+        csvService.parseLineToEmployeeProject(values, employeeProjects)).isInstanceOf(
+        InvalidInputException.class).hasMessageContaining("Input value cannot be empty");
+  }
+}

@@ -13,20 +13,21 @@ import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class CsvService {
 
-  @Autowired
   private EmployeeProjectRepository employeeProjectRepository;
-
-  @Autowired
   private EmployeeProjectService employeeProjectService;
-
   private final Logger logger = LoggerFactory.getLogger(getClass());
+
+  public CsvService(EmployeeProjectRepository employeeProjectRepository,
+      EmployeeProjectService employeeProjectService) {
+    this.employeeProjectRepository = employeeProjectRepository;
+    this.employeeProjectService = employeeProjectService;
+  }
 
   protected List<EmployeeProject> parseCsvFile(MultipartFile file)
       throws IOException {
@@ -60,14 +61,14 @@ public class CsvService {
     return Arrays.stream(contentLine).allMatch(s -> s.equals(""));
   }
 
-  private static boolean isHeaderValid(String[] header) {
+  protected boolean isHeaderValid(String[] header) {
     return Arrays.stream(header)
         .allMatch(
             s -> s.equals("EmpID") || s.equals("ProjectID") || s.equals("DateFrom") || s.equals(
                 "DateTo"));
   }
 
-  private void parseLineToEmployeeProject(String[] line, List<EmployeeProject> employeeProjects)
+  protected void parseLineToEmployeeProject(String[] line, List<EmployeeProject> employeeProjects)
       throws InvalidInputException {
     if (!Arrays.asList(line).contains("")) {
       Long employeeId = Long.valueOf(line[0]);

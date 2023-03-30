@@ -6,21 +6,21 @@ import com.example.employees.jpa.model.EmployeeProjectId;
 import com.example.employees.jpa.model.Project;
 import com.example.employees.jpa.repository.EmployeeProjectRepository;
 import java.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeProjectService {
 
-  @Autowired
   private EmployeeService employeeService;
-
-  @Autowired
   private ProjectService projectService;
-
-  @Autowired
   private EmployeeProjectRepository employeeProjectRepository;
 
+  public EmployeeProjectService(EmployeeService employeeService, ProjectService projectService,
+      EmployeeProjectRepository employeeProjectRepository) {
+    this.employeeService = employeeService;
+    this.projectService = projectService;
+    this.employeeProjectRepository = employeeProjectRepository;
+  }
 
   protected EmployeeProject createEmployeeProject(Long employeeId, Long projectId,
       LocalDate startDate,
