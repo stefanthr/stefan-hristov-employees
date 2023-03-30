@@ -42,7 +42,7 @@ public class CsvService {
         throw new CsvValidationException("CSV is not valid");
       }
     } catch (InvalidInputException invalidInputException) {
-      logger.info("Invalid Input: " + invalidInputException.getMessage());
+      logger.info("Invalid Input");
     } catch (CsvValidationException csvValidationException) {
       logger.info("CSV exception: " + csvValidationException.getMessage());
     }
@@ -70,17 +70,17 @@ public class CsvService {
 
   protected void parseLineToEmployeeProject(String[] line, List<EmployeeProject> employeeProjects)
       throws InvalidInputException {
-    if (!Arrays.asList(line).contains("")) {
+    if (!Arrays.asList(line).stream().anyMatch(entry -> entry.equals("") || entry.contains(" "))) {
       Long employeeId = Long.valueOf(line[0]);
       Long projectId = Long.valueOf(line[1]);
       LocalDate startDate = LocalDate.parse(line[2]);
-      LocalDate endDate = line[3].equals("NULL") ? LocalDate.now() :
+      LocalDate endDate = line[3].equalsIgnoreCase("null") ? LocalDate.now() :
           LocalDate.parse(line[3]);
       EmployeeProject employeeProject = employeeProjectService.createEmployeeProject(employeeId,
           projectId, startDate, endDate);
       employeeProjects.add(employeeProject);
     } else {
-      throw new InvalidInputException("Input value cannot be empty");
+      throw new InvalidInputException();
     }
   }
 

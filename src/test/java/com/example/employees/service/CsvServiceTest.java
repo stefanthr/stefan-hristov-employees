@@ -56,7 +56,7 @@ public class CsvServiceTest {
   @Test
   void testParseInputTo_whenDateToIsNow() throws InvalidInputException {
     List<EmployeeProject> employeeProjects = new ArrayList<>();
-    String[] values = {"1", "1", "2021-01-01", "NULL"};
+    String[] values = {"1", "1", "2021-01-01", "null"};
 
     csvService.parseInputTo(employeeProjects, values);
 
@@ -98,6 +98,6 @@ public class CsvServiceTest {
 
     assertThatThrownBy(() ->
         csvService.parseLineToEmployeeProject(values, employeeProjects)).isInstanceOf(
-        InvalidInputException.class).hasMessageContaining("Input value cannot be empty");
+        InvalidInputException.class);
   }
 }

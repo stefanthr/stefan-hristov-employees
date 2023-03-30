@@ -43,7 +43,7 @@ public class OverlappingProjectController {
     } catch (IOException ioException) {
       logger.error("Error processing file: " + ioException.getMessage());
     } catch (InvalidInputException invalidInputException) {
-      logger.info("Invalid input: " + invalidInputException.getMessage());
+      logger.info("Invalid input");
     }
     model.addAttribute("overlappingProjects", overlappingProjects);
     return "results";

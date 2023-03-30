@@ -1,8 +1,8 @@
 package com.example.employees.exception;
 
-public class InvalidInputException extends Exception {
+import lombok.NoArgsConstructor;
 
-  public InvalidInputException(String message) {
-    super(message);
-  }
+@NoArgsConstructor
+public class InvalidInputException extends Exception {
+  
 }
