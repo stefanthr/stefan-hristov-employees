@@ -65,7 +65,7 @@ public class CsvService {
     return Arrays.stream(header)
         .allMatch(
             s -> s.equals("EmpID") || s.equals("ProjectID") || s.equals("DateFrom") || s.equals(
-                "DateTo"));
+                "DateTo") || s.equals(""));
   }
 
   protected void parseLineToEmployeeProject(String[] line, List<EmployeeProject> employeeProjects)

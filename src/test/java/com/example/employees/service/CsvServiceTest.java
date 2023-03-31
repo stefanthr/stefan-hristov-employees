@@ -49,7 +49,19 @@ public class CsvServiceTest {
   }
 
   @Test
-  void testParseInputTo_whenDateToIsNow() throws InvalidInputException {
+  void testParseInputTo_whenDateToIsNullUpperCase() throws InvalidInputException {
+    List<EmployeeProject> employeeProjects = new ArrayList<>();
+    String[] values = {"1", "1", "2021-01-01", "NULL"};
+
+    csvService.parseInputTo(employeeProjects, values);
+
+    verify(employeeProjectService, times(1)).createEmployeeProject(1L, 1L,
+        LocalDate.parse("2021-01-01"), LocalDate.now());
+    assertThat(employeeProjects.size()).isEqualTo(1);
+  }
+
+  @Test
+  void testParseInputTo_whenDateToIsNullLowerCase() throws InvalidInputException {
     List<EmployeeProject> employeeProjects = new ArrayList<>();
     String[] values = {"1", "1", "2021-01-01", "null"};
 
@@ -70,6 +82,10 @@ public class CsvServiceTest {
   void testIsHeaderValid() {
     assertThat(csvService.isHeaderValid(
         new String[]{"EmpID", "ProjectID", "DateFrom", "DateTo"})).isTrue();
+    assertThat(csvService.isHeaderValid(
+        new String[]{"EmpID", "ProjectID", "DateFrom", ""})).isTrue();
+    assertThat(csvService.isHeaderValid(
+        new String[]{"", "", "", ""})).isTrue();
     assertThat(csvService.isHeaderValid(
         new String[]{"EmpID", "ProjectID", "DateFrom", "InvalidHeader"})).isFalse();
   }
