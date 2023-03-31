@@ -13,6 +13,7 @@ import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,12 +22,13 @@ public class EmployeeServiceTest {
 
   @Mock
   private EmployeeRepository employeeRepository;
+
+  @InjectMocks
   private EmployeeService employeeService;
   private Employee employee;
 
   @BeforeEach
   public void setup() {
-    employeeService = new EmployeeService(employeeRepository);
     employee = new Employee();
   }
 
